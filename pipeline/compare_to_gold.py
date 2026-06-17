@@ -277,32 +277,78 @@ def main():
     logger.info("自动提取: %d 个文件", len(auto_data))
     logger.info("Gold标准: %d 个文件", len(gold_data))
 
-    # 找到共同的公司
-    common_sources = set(auto_data.keys()) & set(gold_data.keys())
-    if not common_sources:
-        # 尝试模糊匹配
-        logger.info("无直接匹配的文件名，尝试模糊匹配...")
-        for auto_name in auto_data:
-            for gold_name in gold_data:
-                if auto_name in gold_name or gold_name in auto_name:
-                    common_sources.add(auto_name)
-                    break
+    # 将gold数据按stock_code分组（gold文件可能将所有公司合并在一个文件中）
+    gold_by_stock_code = defaultdict(list)
+    gold_company_map = {}  # company_name → stock_code
+    for source_name, records in gold_data.items():
+        for rec in records:
+            sc = rec.get("stock_code", "")
+            cn = rec.get("company_name", "")
+            if sc:
+                gold_by_stock_code[sc].append(rec)
+                if cn and sc not in gold_company_map:
+                    gold_company_map[cn] = sc
 
-    if not common_sources:
-        logger.warning("未找到可对比的文件")
+    logger.info("Gold按stock_code分组: %d 个公司", len(gold_by_stock_code))
+
+    # 将auto数据按stock_code分组，auto文件缺少stock_code字段，从文件名推断
+    auto_by_stock_code = defaultdict(list)
+    for source_name, records in auto_data.items():
+        matched_code = None
+        best_score = 0
+        for gold_cn, gold_sc in gold_company_map.items():
+            # 逐字符检查公共前缀，找到最长匹配
+            score = 0
+            for i in range(2, min(len(source_name), len(gold_cn)) + 1):
+                if source_name[:i] in gold_cn:
+                    score = i
+                else:
+                    break
+            if score > best_score:
+                best_score = score
+                matched_code = gold_sc
+        # 备用策略：通过文件名中的关键字匹配（用2字符滑动窗口）
+        if not matched_code or best_score < 3:
+            for gold_cn, gold_sc in gold_company_map.items():
+                for i in range(len(source_name) - 1):
+                    chunk = source_name[i:i+2]
+                    if len(chunk) >= 2 and chunk in gold_cn:
+                        if best_score < 2:
+                            best_score = 2
+                            matched_code = gold_sc
+                        break
+        # 最后备用：从文件名中找数字代码
+        if not matched_code:
+            import re as re2
+            code_match = re2.search(r'(\d{6})', source_name)
+            if code_match:
+                matched_code = code_match.group(1)
+        if matched_code:
+            for rec in records:
+                auto_by_stock_code[matched_code].append(rec)
+            logger.info("  %s → %s (%d 条, score=%d)", source_name, matched_code, len(records), best_score)
+        else:
+            logger.warning("  无法匹配公司代码: %s", source_name)
+
+    logger.info("Auto按stock_code分组: %d 个公司", len(auto_by_stock_code))
+
+    # 找到共同的公司
+    common_codes = set(auto_by_stock_code.keys()) & set(gold_by_stock_code.keys())
+    if not common_codes:
+        logger.warning("未找到可对比的公司（无共同stock_code）")
         sys.exit(0)
 
-    logger.info("可对比: %d 个公司", len(common_sources))
+    logger.info("可对比: %d 个公司", len(common_codes))
 
     # 逐公司对比
     all_row_matches = []
     all_summaries = []
 
-    for source in sorted(common_sources):
-        logger.info("对比: %s", source)
+    for stock_code in sorted(common_codes):
+        logger.info("对比: %s", stock_code)
 
-        auto_records = auto_data.get(source, [])
-        gold_records = gold_data.get(source, [])
+        auto_records = auto_by_stock_code.get(stock_code, [])
+        gold_records = gold_by_stock_code.get(stock_code, [])
 
         if not auto_records:
             logger.warning("  自动提取结果为空")
@@ -316,12 +362,16 @@ def main():
 
         # 标记来源
         for row in row_matches:
-            row["source"] = source
+            row["source"] = "{}_auto".format(stock_code)
         all_row_matches.extend(row_matches)
+
+        # 获取公司简称
+        company_name = gold_records[0].get("company_name", stock_code) if gold_records else stock_code
+        source_label = "{}_{}".format(stock_code, company_name[:4] if company_name else "")
 
         for field, stats in summary.items():
             all_summaries.append({
-                "source": source,
+                "source": source_label,
                 "field": field,
                 "total": stats["total"],
                 "matched": stats["matched"],
