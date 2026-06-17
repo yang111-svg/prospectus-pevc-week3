@@ -1,0 +1,16 @@
+source,row_index,has_auto,has_gold,investor_name_auto,investor_name_gold,investor_name_match,subscription_amount_auto,subscription_amount_gold,subscription_amount_match,subscription_shares_auto,subscription_shares_gold,subscription_shares_match,price_per_share_auto,price_per_share_gold,price_per_share_match,date_auto,date_gold,date_match,total_capital_after_auto,total_capital_after_gold,total_capital_after_match
+001282_三联锻造_auto,1,TRUE,TRUE,三联合伙,三联合伙,Y,1566,1566,Y,348,348,Y,4.5,4.5,Y,2019年12月,2019-12-04,Y,,,
+301563_云汉芯城_auto,1,TRUE,TRUE,国科瑞华,国科瑞华,Y,5000,5000,Y,200,200,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,2,TRUE,TRUE,CASREV,CASREV,Y,3000,3000,Y,120,120,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,3,TRUE,TRUE,中科贵银,中科贵银,Y,2000,2000,Y,80,80,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,4,TRUE,TRUE,镇江红土,镇江红土,Y,2000,2000,Y,80,80,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,5,TRUE,TRUE,深创投,深创投,Y,1000,1000,Y,40,40,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,6,TRUE,TRUE,昆山红土,昆山红土,Y,500,500,Y,20,20,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,7,TRUE,TRUE,富海节能,富海节能,Y,500,500,Y,20,20,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,8,TRUE,TRUE,杭州藤创,杭州藤创,Y,250,250,Y,10,10,Y,25,25,Y,2019年10月,2019-10-30,Y,,,
+301563_云汉芯城_auto,9,TRUE,FALSE,,,,,,,,,,,,,,,
+,,,FALSE,TRUE,,国科瑞华,N,,,,,,,,,,,,
+# 说明：本文件由 compare_to_gold.py 生成
+# 运行方式：cd pipeline && python compare_to_gold.py --auto-dir ../outputs/auto_jsonl --gold-dir ../manual_gold --output-dir ../evaluation
+# 以上为预期输出格式示例（仅301563云汉芯城前8条记录），全量结果需运行pipeline后生成
+# auto列第9行及以后为空表示规则/LLM未能提取到的事件（漏抽），gold列空表示自动提取了gold中不存在的事件（误抽/幻觉）

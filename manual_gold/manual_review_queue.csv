@@ -1,1 +1,12 @@
-﻿record_id,company_name,stock_code,issue_type,description,priority,resolved
+record_id,company_name,stock_code,issue_type,field_affected,current_value,expected_value,issue_description,priority,status,reviewer,review_date,resolution
+MRQ_001,云汉芯城（上海）互联网科技股份有限公司,301563,missing_data,subscription_qty_wan,,,cross_check发现增资流量合计570万元，但PDF披露t0→t1总股本变动为770万元（4598→5368），差额200万元。疑似遗漏1-2笔增资记录。需核查PDF第55-65页股本演变章节是否有其他增资事件。,HIGH,open,,,
+MRQ_002,云汉芯城（上海）互联网科技股份有限公司,301563,calculation_error,total_shares,4598.0,4599.0,equity_snapshot t0各股东持股加总=4599万元，但total_shares字段标注为4598。差异1万元，疑似四舍五入或个别股东持股数据精度问题。,LOW,open,,,
+MRQ_003,影石创新科技股份有限公司,688775,calculation_error,subscription_qty_wan,137.0187,,2019年4月增资23家投资者认缴股数加总：3×19.2308+4×9.6154+3×4.8077+14×2.4038=144.2303，但PDF披露增资总额为137.0187。差异约7.2万元，可能是个别投资者认缴股数取整差异或存在其他调整。需逐笔核对PDF中23家投资者的精确认缴数。,HIGH,open,,,
+MRQ_004,苏州赛分科技股份有限公司,688758,unit_ambiguity,subscription_qty_wan,,,赛分科技在有限公司阶段注册资本单位为\"万元\"，但equity_snapshot中使用了total_shares（万股）。需确认在有限公司阶段应使用registered_capital（万元注册资本）而非total_shares（万股股本）。,MEDIUM,open,,,
+MRQ_005,上海友升铝业股份有限公司,603418,unit_ambiguity,registered_capital vs total_shares,,,友升股份整体变更前后单位不一致：t0为有限公司（注册资本10,950.2788万元），t0+为股份公司（股本12,000万股）。cross_check时需注意前后单位不同，不能直接相加。整体变更折股比例约1.095:1。,MEDIUM,open,,,
+MRQ_006,芜湖三联锻造股份有限公司,001282,duplicate_record,equity_snapshot,,,equity_snapshot_gold.jsonl中001282有两行t0记录（第1行和第2行），内容相似但不完全一致。需确认哪一条为最终版本，删除重复记录。,MEDIUM,open,,,
+MRQ_007,黄山谷捷股份有限公司,301581,data_quality,subscription_amount_wan,0.0,,吸收合并昆山谷捷和零对价股权转让的金额均为0，是否为真实零对价还是PDF未披露金额？需确认零对价是否合理（吸收合并通常不涉及现金对价，股权在集团内部转移）。,LOW,open,,,
+MRQ_008,影石创新科技股份有限公司,688775,data_quality,subscription_qty_wan,2.4038,,2019年4月增资中有14家投资者各认缴2.4038万元，这个数字在PDF中是否是精确值？文中\"以货币出资125万元认购2.4038万元新增注册资本\"，125/2.4038=52.00，验算一致。但2.4038的小数精度是否与PDF一致需确认。,LOW,open,,,
+MRQ_009,影石创新科技股份有限公司,688775,missing_data,investor_name,,,2019年和2020年增资涉及33家投资者，其中部分投资者名称包含英文（如QIMING VENTURE, QM101, Vantage Point, EARN ACE），需确认英文名称是否与PDF一致。,LOW,open,,,
+MRQ_010,常州三协电机股份有限公司,920100,data_quality,event_date,2004-12-01,2004-12,深圳三协第一次增资具体日期不明确。已知是2004年12月完成，但精确日期未在现有证据中披露。建议将日期改为2004-12（仅精确到月）。,LOW,open,,,
+MRQ_011,所有8家公司,ALL,process,evidence_text,,,部分gold记录中的evidence_text是从Week2数据中保留的，未在Week3中逐条回到PDF重新验证。建议在提交前抽查至少20%的记录进行PDF回源复核。,HIGH,open,,,
