@@ -10,7 +10,7 @@ record_id,company_name,stock_code,record_type,gold_file,event_type,event_date,in
 301563_SF_006,云汉芯城（上海）互联网科技股份有限公司,301563,subscription_flow,subscription_flow_gold.jsonl,增资,2019-10-30,昆山红土,20.0,60,confirmed,yang111-svg,2026-06-17,昆山红土增资
 301563_SF_007,云汉芯城（上海）互联网科技股份有限公司,301563,subscription_flow,subscription_flow_gold.jsonl,增资,2019-10-30,富海节能,20.0,60,confirmed,yang111-svg,2026-06-17,富海节能增资
 301563_SF_008,云汉芯城（上海）互联网科技股份有限公司,301563,subscription_flow,subscription_flow_gold.jsonl,增资,2019-10-30,杭州藤创,10.0,60,confirmed,yang111-svg,2026-06-17,杭州藤创增资
-301563_ES_001,云汉芯城（上海）互联网科技股份有限公司,301563,equity_snapshot,equity_snapshot_gold.jsonl,t0|报告期初,2019-01-01,,4598.0,58,confirmed,yang111-svg,2026-06-17,t0期初股权结构
+301563_ES_001,云汉芯城（上海）互联网科技股份有限公司,301563,equity_snapshot,equity_snapshot_gold.jsonl,t0|报告期初,2019-01-01,,4599.0,58,confirmed,yang111-svg,2026-06-17,t0期初股权结构（修正：原4598改为4599，与股东加总一致）
 301563_ES_002,云汉芯城（上海）互联网科技股份有限公司,301563,equity_snapshot,equity_snapshot_gold.jsonl,t1|第一次增资后,2019-11-04,,5368.0,60,confirmed,yang111-svg,2026-06-17,t1增资后股权结构
 301581_SF_001,黄山谷捷股份有限公司,301581,subscription_flow,subscription_flow_gold.jsonl,增资（吸收合并）,2021-04-03,昆山谷捷（吸收合并）,200.0,40,confirmed,yang111-svg,2026-06-17,吸收合并增资
 301581_SF_002,黄山谷捷股份有限公司,301581,subscription_flow,subscription_flow_gold.jsonl,增资,2021-09-18,赛格高技术,462.8571,42,confirmed,yang111-svg,2026-06-17,赛格高技术增资
