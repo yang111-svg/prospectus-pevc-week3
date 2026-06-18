@@ -78,6 +78,6 @@ PDF文本解析(parse_pdf.py) → 章节定位(locate_sections.py)
 
 ## 三、下周计划（Week 4）
 
-- 完成组间检查（抽查其他三组各10家公司）
+- 完成组间检查（抽查其他三组各家公司）
 - 完善最终presentation
 - 补充week4周报
